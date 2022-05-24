@@ -30,6 +30,7 @@
                   {required:true,message:'账号不能为空'}
                 ]">
                 <el-input 
+                  @keyup.enter.native="login()"
                   v-model="form.username" 
                   placeholder="请输入账号或者用户名"
                   ></el-input>
@@ -41,6 +42,7 @@
                   {required:true,message:'密码不能为空'}
                 ]">
                 <el-input 
+                  @keyup.enter.native="login()"
                   v-model="form.password" 
                   placeholder="请输入密码" 
                   show-password></el-input>
@@ -52,6 +54,7 @@
                   {required:true,message:'验证码不能为空'}
                 ]">
                 <el-input 
+                  @keyup.enter.native="login()"
                   v-model="form.checkMsg" 
                   placeholder="请输入验证码"></el-input>
               </el-form-item>
@@ -72,21 +75,23 @@
             <el-form ref="form2" :model="form2" label-width="80px" size="medium">
               <el-form-item 
                 label="用户名"
-                prop="username"
+                prop="nickname"
                 :rules="[
                   {required:true,message:'用户名不能为空'}
                 ]">
                 <el-input 
-                  v-model="form2.username" 
+                  @keyup.enter.native="register()"
+                  v-model="form2.nickname" 
                   placeholder="请输入用户名"></el-input>
               </el-form-item>
               <el-form-item 
                 label="密码"
-                prop="passwrod"
+                prop="password"
                 :rules="[
                   {required:true,message:'密码不能为空'}
                 ]">
                 <el-input 
+                  @keyup.enter.native="register()"
                   v-model="form2.password" 
                   placeholder="请输入密码" 
                   show-password></el-input>
@@ -98,6 +103,7 @@
                   {required:true,message:'密码不能为空'}
                 ]">
                 <el-input 
+                  @keyup.enter.native="register()"
                   v-model="form2.repassword" 
                   placeholder="请输入密码" 
                   show-password></el-input>
@@ -120,6 +126,7 @@
                   {required:true,message:'验证码不能为空'}
                 ]">
                 <el-input 
+                  @keyup.enter.native="register()"
                   v-model="form2.checkMsg" 
                   placeholder="请输入验证码"></el-input>
               </el-form-item>
@@ -158,7 +165,7 @@
           checkMsg:''
         },
         form2 : {
-          username:'',
+          nickname:'',
           password:'',
           repassword:'',
           checkMsg:'',
@@ -211,7 +218,9 @@
               if(res.success) {
                 var _data = res.data;
                 if(_data.status == '1') {
-                  that.$message.success('登录成功')
+                  that.$router.push({
+                    path:'/wb'
+                  })
                 }else {
                   that.load();
                   that.$message.warning(_data.msg);
@@ -224,9 +233,20 @@
         })
       },
       register() {
+        var that = this;
         this.$refs['form2'].validate((valid) => {
           if(valid) {
-            console.log('success')
+            globalApi.register(that.form2).then(res => {
+              if(res.success) {
+                var _data = res.data;
+                if(_data.status == '1') {
+                  that.$message.success("注册成功");
+                  that.active = '1';
+                }else {
+                  that.$message.warning(_data.msg);
+                }
+              }
+            })
           } else {
             console.log('error');
           }

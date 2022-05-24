@@ -1,7 +1,7 @@
 <template>
   <div>
     <common-head></common-head>
-    <div>
+    <div class="main-body">
       <router-view></router-view>
     </div>
   </div>
@@ -21,5 +21,8 @@
   }
 </script>
 
-<style>
+<style scoped="scoped">
+  .main-body {
+    background-color: #f5f5f5;
+  }
 </style>

@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    主页面
+  </div>
 </template>
 
 <script>

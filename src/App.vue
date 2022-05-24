@@ -18,4 +18,9 @@ export default {
     padding: 0;
     margin: 0;
   }
+  
+  .search-box .el-input__inner {
+    border-radius: 40px!important;
+    background-color: #f0f1f4!important;
+  }
 </style>

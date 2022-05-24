@@ -6,5 +6,8 @@ export default {
   },
   login(param) {
     return post('/user/login',param);
+  },
+  register(param) {
+    return post('/user/register',param);
   }
 }
