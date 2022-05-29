@@ -6,6 +6,7 @@ import HotWork from "@/views/hot/hotWork"
 import At from "@/views/message/msg"
 import My from "@/views/mine/mine"
 import Login from "@/views/loginAndRegister"
+import Admin from "@/views/admin/index"
 
 
 export const constantRouterMap = [
@@ -56,5 +57,10 @@ export const constantRouterMap = [
     path:"/lag",
     name:"loginAndRegister",
     component:Login
+  },
+  {
+    path:"/admin/index",
+    name:"admin",
+    component:Admin
   }
 ]
