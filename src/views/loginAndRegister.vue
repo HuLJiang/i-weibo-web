@@ -190,6 +190,19 @@
     methods: {
       load() {
         var that = this;
+        globalApi.tokenLogin().then(res => {
+          if(res.success) {
+            var _data = res.data;
+            if(_data.status == '1') {
+              that.$router.push({
+                path:'/wb',
+                query:{
+                  p:1
+                }
+              })
+            }
+          }
+        })
         globalApi.getCheckMsg().then(res => {
           // console.log(res);
           if(res.success) {
@@ -218,6 +231,8 @@
               if(res.success) {
                 var _data = res.data;
                 if(_data.status == '1') {
+                  that.userInfo.setIsLogin();
+                  localStorage.setItem("token",_data.token);
                   that.$router.push({
                     path:'/wb'
                   })

@@ -39,7 +39,9 @@
             <i class="el-icon-message"></i>
           </el-menu-item>
           <el-menu-item index="5">
-            <i class="el-icon-user-solid"></i>
+            <el-avatar :size="30" :src="user.headImg">
+              <img src="../assets/default.gif"/>
+            </el-avatar>
           </el-menu-item>
         </el-menu>
       </div>
@@ -59,7 +61,7 @@
   export default {
     data() {
       return {
-        active: '1',
+        active: '3',
         state:'',
         a: [
           {
@@ -68,17 +70,23 @@
           }
         ],
         path:[
-          '/wb/index','/wb/hot','/wb/tv','/wb/at','/wb/my'
-        ]
+          '/wb/index/follow','/wb/index/tv','/wb/index/hot','/wb/index/msg','/wb/index/mine'
+        ],
+        headImg:'',
+        user:{}
       }
     },
     created() {
-      if(this.$route.query.p) {
-        this.active = this.$route.query.p;
-      }
-      this.select(this.active);
+      this.load();
     },
     methods: {
+      load() {
+        if(this.$route.query.p) {
+          this.active = this.$route.query.p;
+        }
+        this.select(this.active);
+        // this.headImg = this.userInfo.getUserImg();
+      },
       select(e) {
         this.active = e;
         if(this.$route.path != this.path[parseInt(e) - 1]) {
@@ -99,8 +107,11 @@
 
 <style scoped="scoped">
   .common-head {
-    height: 57px;
+    height: 60px;
     background-color: white;
+    position: fixed;
+    width: 100%;
+    z-index: 999;
   }
   .head-main {
     width: 1200px;

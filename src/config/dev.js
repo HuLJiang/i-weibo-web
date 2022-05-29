@@ -1,3 +1,3 @@
-// const HOST = "http://localhost:8899"
+const HOST = "http://localhost:8083"
 
-export default `/api`
+export default `${HOST}/api`

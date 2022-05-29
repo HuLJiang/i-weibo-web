@@ -1,0 +1,223 @@
+  .search-box .el-input__inner {
+    border-radius: 40px!important;
+    background-color: #f0f1f4!important;
+  }
+  .index-title {
+    margin: 0;
+    padding: 10px 16px;
+    line-height: 26px;
+    font-size: 22px;
+    font-weight: 500;
+  }
+  
+  .index-left {
+    width: 182px;
+  }
+  .index-mid {
+    width: 640px;
+    margin-top: 60px;
+  }
+  .index-right {
+    width: 280px;
+    height: 1100px;
+  }
+  .share-input .el-textarea__inner {
+    border: none!important;
+    font-size: 14px!important;
+  }
+  .el-link--inner {
+    font-size: 12px!important;
+  }
+  .el-menu {
+    border: none!important;
+  }
+  .all-main {
+    display: flex;
+    width: 832px;
+    justify-content: space-between;
+  }
+  .left-info {
+    background-color: white;
+    padding: 0 5px;
+    height: 500px;
+    width: 172px;
+    position: fixed;
+    top: 70px;
+  }
+  .share-work {
+    padding: 20px;
+    
+  }
+  .share-input {
+    border:1px solid #ff8200;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .share-input .el-textarea__inner {
+    border: none!important;
+  }
+  .mid-info-1 {
+    background-color: white;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  .share-icon {
+    font-size: 20px;
+    width: 34px;
+    height: 34px;
+    border-radius: 34px;
+    text-align: center;
+    line-height: 34px;
+    cursor: pointer;
+  }
+  .share-icon:hover {
+    background-color: rgba(0,0,0,0.1);;
+  }
+  .share-scope {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .share-btn {
+    background: #ff8200;
+    width: 68px;
+    height: 34px;
+    border-radius: 34px;
+    text-align: center;
+    line-height: 34px;
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+    margin-right: 20px;
+    border: none;
+  }
+  .share-btn:hover {
+    background-color: #ff5900;;
+  }
+  .mid-info-2 {
+  }
+  .share-card {
+    margin-bottom: 10px;
+    padding: 25px 20px 20px 20px;
+    background-color: white;
+    display: flex;
+  }
+  .share-info {
+    margin-left: 10px;
+    padding-top: 15px;
+    width: 520px;
+  }
+  .follow-user-btn {
+    width: 68px;
+    height: 28px;
+    border-radius: 28px;
+    text-align: center;
+    color: #ff8200;
+    border: 1px solid #ff8200;
+    line-height: 28px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .follow-user-btn:hover {
+    background-color: rgba(255,50,0,0.2);
+  }
+  .other-work-setting {
+    cursor: pointer;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    border-radius: 24px;
+    position: relative;
+    top: -4px;
+  }
+  .other-work-setting:hover {
+    
+    background-color: rgba(0,0,0,0.1);;
+  }
+  .work-user-nickname {
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .work-user-nickname:hover {
+    color: #eb7350;
+  }
+  .work-share-datatime {
+    margin-top: 5px;
+    color: #939393;
+    font-size: 12px;
+  }
+  .work-content {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  .reshare-work {
+    background-color: #f9f9f9;
+    font-size: 14px;
+  }
+  .interaction {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    color: #808080;
+    padding: 0 20px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .interaction div>span {
+    margin: 0 10px 0 5px;
+  }
+  .interaction i {
+    font-size: 20px!important;
+  }
+  .interaction span {
+    position: relative;
+    top: -2px;
+  }
+  .user-in-prev {
+    cursor: pointer;
+  }
+  .user-in-prev:hover {
+    color: #ff8200;
+  }
+  .user-in-next {
+    color: #ff8200;
+    cursor: pointer;
+  }
+  .share-scope .el-select>.el-input {
+    /* width: 70px; */
+    display: inline-block;
+    width: auto!important;
+    font-size: 12px!important;
+  }
+  .share-scope .el-input__inner {
+      border: none!important;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-left: 20px;
+  }
+  .avatar-uploader {
+    display: inline-block;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 100px;
+    line-height: 100px!important;
+    text-align: center;
+  }
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
