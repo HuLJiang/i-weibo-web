@@ -24,6 +24,7 @@
   .share-input .el-textarea__inner {
     border: none!important;
     font-size: 14px!important;
+    min-height: 60px!important;
   }
   .el-link--inner {
     font-size: 12px!important;
@@ -119,7 +120,7 @@
     font-size: 14px;
   }
   .follow-user-btn:hover {
-    background-color: rgba(255,50,0,0.2);
+    background-color: rgba(255,50,0,0.1);
   }
   .other-work-setting {
     cursor: pointer;
@@ -220,4 +221,146 @@
   .avatar {
     width: 100px;
     height: 100px;
+  }
+  .talk-input>.el-input__inner {
+    border-radius: 8px;
+    width: 500px;
+    margin-right: 15px;
+  }
+  .focus .el-input__inner {
+    border: none!important;
+    background-color: #f0f1f4!important;
+    border-radius: 8px;
+    width: 500px;
+    margin-right: 15px;
+  }
+  .talk-input>.el-input__inner {
+    border: none!important;
+    background-color: #f0f1f4!important;
+  }
+  .talk-input>.el-input__inner:focus {
+    border: 1px solid #ff8200!important;
+    background-color: white!important;
+  }
+  .focus .el-input__inner {
+    /* border: 1px solid #ff8200!important;
+    background-color: white!important; */
+    /* border: none!important; */
+  }
+  .focus .el-input__inner:focus {
+    border: 1px solid #ff8200!important;
+    background-color: white!important;
+  }
+  .user-talk {
+    display: flex;
+    justify-content: space-around;
+    /* margin-top: 25px; */
+    /* position: relative;
+    left: -60px; */
+  }
+  .user-talk>.el-input {
+    /* display: inline-block!important; */
+    width: auto!important;
+  }
+  .talk-btn {
+    background: #ff8200;
+    color: #fff;
+    line-height: 34px;
+    width: 68px;
+    border-radius: 34px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .user-talks {
+    border-top: 1px solid rgba(200,200,200,0.2);
+    margin-top: 20px;
+    overflow: hidden;
+    font-size: 12px;
+    padding-top: 20px;
+  }
+  .user-talks-for-dialog {
+    border-top: 1px solid rgba(200,200,200,0.2);
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 10px 20px 0 20px;
+    height: 437px;
+    overflow-y: auto;
+  }
+  .el-dialog__body {
+    padding: 0!important;
+  }
+  .talk-template {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  .first-level-u {
+    margin-left: 10px;
+    line-height: 20px;
+  }
+  .talk-time {
+    color: #939393;
+    display: flex;
+    justify-content: space-between;
+    width: 450px;
+  }
+  .reply-talk {
+    margin-right: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    
+  }
+  .reply-talk:hover {
+    color: #ff8200;
+  }
+  .show-more-talk {
+    color: #eb7350;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .talk-msg {
+    
+  }
+  .second-level-talk {
+    padding-left: 10px;
+    border-left: 2px solid rgba(200,200,200,0.2);
+  }
+  .talk-dialog {
+    height: 514px;
+    width: 600px!important;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 12px!important;
+    
+  }
+  .talk-send-dialog {
+    width: 600px!important;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 12px!important;
+    height: 214px;
+  }
+  .to-work-detail {
+    line-height: 44px;
+    background: #fff;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    cursor: pointer;
+  }
+  .to-work-detail:hover {
+    color: #eb7350;
+  }
+  .follow-user-btn-2 {
+    width: 68px;
+    height: 28px;
+    border-radius: 28px;
+    text-align: center;
+    background: rgba(0,0,0,.2);
+    line-height: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    border: none;
   }

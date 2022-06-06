@@ -1,12 +1,12 @@
 import devUrl from "./dev"
 import proUrl from "./pro"
 
-let BASE_URL;
+let BASE;
 
 if(process.env.NODE_ENV === 'development') {
-  BASE_URL = devUrl;
+  BASE = devUrl;
 }else {
-  BASE_URL = proUrl;
+  BASE = proUrl;
 }
 
-export default BASE_URL;
+export default BASE;

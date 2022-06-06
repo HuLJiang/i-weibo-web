@@ -2,7 +2,7 @@
   <div class="all-main">
     <div class="index-left">
       <div class="left-info">
-        <div class="index-title">热门</div>
+        <div class="index-title">{{menu.title}}</div>
         <div>
           <el-menu
             :default-active="menu.active"
@@ -23,23 +23,21 @@
       </div>
     </div>
     <div class="index-mid">
-      <div v-if="loading">
+      <!-- <div v-if="loading">
         <loading></loading>
       </div>
       <work-list 
         v-else 
         :showFollow="true"
-        :rows="rows"></work-list>
+        :rows="rows"></work-list> -->
+        <router-view ref="lazyLoad"></router-view>
     </div>
   </div>
 </template>
 
 <script>
-  import baseApi from '@/api/user/baseApi'
-  import loading from '@/components/loading'
-  import workList from '@/components/workList'
   const menu = {
-    title:'消息',
+    title:'热门',
     active:'1',
     list: [
       {
@@ -72,38 +70,12 @@
       }
     },
     components:{
-      loading,
-      workList
+      // loading,
+      // workList
     },
     created() {
-      this.load();
     },
     methods: {
-      load() {
-        var that = this;
-        baseApi.getWorkList(this.page).then(res => {
-          if(res.success) {
-            var _data = res.data;
-            if(_data.status == '1') {
-              _data.rows.forEach(item => {
-                item.toTalk = false;
-                item.focus = false;
-              })
-              if(that.rows == null || that.rows.length == 0) {
-                that.rows = _data.rows;
-              }else {
-                _data.rows.forEach(item => {
-                  that.rows.push(item);
-                })
-              }
-              
-            }else {
-              that.$message.warning(res.msg);
-            }
-            that.loading = false;
-          }
-        })
-      },
       select(e) {
         console.log(e)
       },
@@ -123,16 +95,7 @@
         }
       },
       lazyLoad() {
-        if(!this.canLoad) {
-          return;
-        }
-        this.canLoad = false;
-        setTimeout(() => {
-          this.canLoad = true;
-        },1000);
-        this.lazy = true;
-        this.page.pageNum ++;
-        this.load();
+        this.$refs.lazyLoad.lazyLoad();
       }
     }
   }

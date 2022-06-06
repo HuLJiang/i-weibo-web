@@ -10,25 +10,16 @@
             <div class="title">
               微博热搜
             </div>
-            <div class="refresh">
+            <div class="refresh" @click="load()">
               <i style="font-size: 16px;position: relative;top: 1px;" class="el-icon-refresh"></i>
               点击刷新
             </div>
           </div>
           <div class="hot-search-body">
-            <div class="hot-item">
-              <div class="prev-three">1</div>
+            <div class="hot-item" v-for="(item,index) in rows" :key="index">
+              <div class="prev-three">{{index + 1}}</div>
               <div class="search-word">
-                啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
-              </div>
-              <div class="hot">
-                热
-              </div>
-            </div>
-            <div class="hot-item">
-              <div class="other">10</div>
-              <div class="search-word">
-                啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+                {{item}}
               </div>
               <div class="hot">
                 热
@@ -49,17 +40,29 @@
 
 <script>
   import commonFoot from '@/components/commonFoot'
+  import baseApi from '@/api/user/baseApi'
   export default {
     data() {
       return {
         textarea:'',
-        scope:'公开'
+        scope:'公开',
+        rows:[]
       }
     },
     components:{
       commonFoot
     },
+    created() {
+      this.load();
+    },
     methods: {
+      load() {
+        baseApi.getHotWord().then(res => {
+          if(res.success && res.data.status == '1') {
+            this.rows = res.data.rows;
+          }
+        })
+      },
       select(e) {
         console.log(e)
       },
@@ -162,5 +165,6 @@
     background-color: white;
     margin-top: 10px;
     padding: 10px;
+    height: 75px;
   }
 </style>

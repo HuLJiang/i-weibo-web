@@ -15,5 +15,8 @@ export default {
   },
   getUserInfo() {
     return post('/user/getUserInfo',{});
+  },
+  session() {
+    return get('/user/session',{});
   }
 }

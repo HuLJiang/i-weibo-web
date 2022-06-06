@@ -1,13 +1,12 @@
 import axios from 'axios'
 // import {getCookie} from './cookie'
 
-import BASE_URL from '@/config/index'
+import BASE from '@/config/index'
 const request = axios.create({
 
-  baseURL:BASE_URL,
+  baseURL:BASE.API,
   timeout:10000
 });
-
 request.interceptors.request.use(config => {
   //设置请求头
   // config.headers.token = getCookie('token');
@@ -19,6 +18,9 @@ request.interceptors.request.use(config => {
     return Promise.reject(error);
 })
 request.interceptors.response.use(response => {
+  if(!response.data.success) {
+    location.href = "#/lag";
+  }
   return response;
 }, function (error) {
     // 对请求错误做些什么
@@ -35,9 +37,19 @@ function ajax(url,param,method) {
   })
 }
 
+function ajaxGet(url,param,method) {
+  return new Promise((resolve,reject) => {
+    request({
+      url:url,
+      method:method == null || method == '' ? 'GET' : method,
+      params:param
+    }).then(res => resolve(res.data)).catch(error => reject(error));
+  })
+}
+
 //get请求
 export function get(url,param){
-  return ajax(url,param,'GET');
+  return ajaxGet(url,param);
 }
 
 //post请求

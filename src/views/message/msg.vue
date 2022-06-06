@@ -16,158 +16,115 @@
             :key="index">
               <i :class="item.icon"></i>
               <span slot="title">{{item.name}}</span>
+              <div v-if="item.num != 0" class="num">{{item.num}}</div>
             </el-menu-item>
-            <!-- <el-menu-item index="1">
-              <i class="el-icon-paperclip"></i>
-              <span slot="title">@我的</span>
-            </el-menu-item>
-            <el-menu-item index="2">
-              <i class="el-icon-chat-dot-round"></i>
-              <span slot="title">评论</span>
-            </el-menu-item>
-            <el-menu-item index="3">
-              <i class="el-icon-star-on"></i>
-              <span slot="title">赞</span>
-            </el-menu-item> -->
           </el-menu>
         </div>
       </div>
     </div>
     <div class="index-mid">
-      <div class="mid-info-1">
-        <div class="share-work">
-          <el-input
-            class="share-input"
-            type="textarea"
-            placeholder="有什么新鲜事想分享给大家？"
-            v-model="textarea"
-            maxlength="200"
-          >
-          </el-input>
-        </div>
-        <div style="display: flex;">
-          <div class="share-icon" style="margin-left: 20px;">
-            <i class="el-icon-picture-outline"></i>
-          </div>
-          <div class="share-icon">
-            <i class="el-icon-paperclip"></i>
-          </div>
-          <div class="share-scope">
-            <el-dropdown trigger="click">
-              <span class="el-dropdown-link" style="cursor: pointer;">
-                {{scope}}<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click="setScope(0)">公开</el-dropdown-item>
-                <el-dropdown-item @click="setScope(1)">粉丝</el-dropdown-item>
-                <el-dropdown-item @click="setScope(2)">仅自己可见</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-          <div class="share-btn">
-            发送
-          </div>
-        </div>
-      </div>
-      <div class="mid-info-2">
-        <div class="share-card">
-          <div>
-            <el-avatar :size="60" src="https://empty">
-              <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-            </el-avatar>
-          </div>
-          <div class="share-info">
-            <div style="display: flex;justify-content: space-between;">
-              <div>
-                <div class="work-user-nickname">测试用户</div>
-                <div class="work-share-datatime">2000-20-20 10:10</div>
-              </div>
-              <div style="display: flex;">
-                <div class="follow-user-btn">+关注</div>
-                <div>
-                  <el-dropdown trigger="click">
-                    <span class="el-dropdown-link other-work-setting">
-                      <i class="el-icon-arrow-down"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item @click="setScope(0)">公开</el-dropdown-item>
-                      <el-dropdown-item @click="setScope(1)">粉丝</el-dropdown-item>
-                      <el-dropdown-item @click="setScope(2)">仅自己可见</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </div>
-              </div>
-            </div>
-            <div class="work-content">
-              12312
-            </div>
-            <div class="reshare-work">
-              <at-user :nickname="'1231'" :username="'aaa'"></at-user>
-              <div>正文正文</div>
-            </div>
-            <div class="interaction">
-              <div>
-                <i class="el-icon-s-promotion"></i>
-                <span>123</span>
-              </div>
-              <div>
-                <i class="el-icon-chat-dot-square"></i>
-                <span>123</span>
-              </div>
-              <div>
-                <i class="el-icon-star-off"></i>
-                <span>123</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div>
+        <router-view ref="msgLazy"></router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import baseApi from '@/api/user/baseApi'
   const menu = {
     title:'消息',
     active:'1',
     list: [
       {
         type:'1',
-        url:'',
+        url:'/wb/index/msg/at',
         name:'@我的',
-        icon:'el-icon-paperclip'
+        icon:'el-icon-paperclip',
+        num:0
       },
       {
         type:'2',
-        url:'',
+        url:'/wb/index/msg/talk',
         name:'评论',
-        icon:'el-icon-chat-dot-round'
+        icon:'el-icon-chat-dot-round',
+        num:0
       },
       {
         type:'3',
-        url:'',
+        url:'/wb/index/msg/like',
         name:'赞',
-        icon:'el-icon-star-on'
+        icon:'el-icon-star-on',
+        num:0
       }
     ]
   }
   export default {
     data() {
       return {
-        textarea:'',
-        scope:'公开',
         menu:menu
       }
     },
     components:{
     },
+    created() {
+      if(this.$route.query.type != null) {
+        this.menu.active = this.$route.query.type
+      }
+      var path = this.$route.path;
+      if(path == '/wb/index/msg') {
+        if(this.$route.query.type != null) {
+          this.select(this.$route.query.type);
+        }else {
+          this.select('1')
+        }
+      }
+      this.load();
+    },
     methods: {
+      load() {
+        baseApi.getMsg().then(res => {
+          if(res.success) {
+            var _data = res.data;
+            if(_data.status == '1') {
+              _data.rows.forEach(item => {
+                if(item.type == 0) {
+                  this.menu.list[2].num = item.num
+                }else {
+                  this.menu.list[1].num = item.num;
+                }
+              })
+            }
+          }
+        })
+      },
       select(e) {
-        console.log(e)
+        if(e == '2') {
+          this.read('1',e);
+        }else {
+          this.read('0',e)
+        }
+        this.$router.push({
+          path:this.menu.list[parseInt(e) - 1].url,
+          query:{
+            type:e,
+            p:4
+          }
+        })
+      },
+      read(type,e) {
+        baseApi.readMessage({type:type}).then(res => {
+          if(res.success && res.data.status == '1') {
+            this.menu.list[parseInt(e) - 1].num = 0;
+          }
+        })
       },
       setScope(e) {
         const scopes = ['公开','粉丝','仅自己可见'];
         this.scope = scopes[e];
+      },
+      lazyLoad() {
+        this.$refs.msgLazy.lazyLoad();
       }
     }
   }
@@ -175,4 +132,15 @@
 
 <style scoped>
   @import url('../../utils/common.css');
+  .num {
+    line-height: 13px;
+    padding: 1px 3px 1px 3px;
+    border-radius: 13px;
+    color: white;
+    font-size: 12px;
+    background-color: #ff2026;
+    display: inline-block;
+    float: right;
+    margin-top: 20px;
+  }
 </style>

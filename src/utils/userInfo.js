@@ -5,9 +5,17 @@ export default {
   follower:{},
   getUserInfo() {
     if(!this.isLogin) {
-      console.log(1)
       return {
-        userNickname:''
+        nickname:'',
+        id:''
+      }
+    }
+    return this.user;
+  },
+  init() {
+    if(!this.isLogin) {
+      return {
+        nickname:''
       }
     }
     var that = this;
@@ -17,16 +25,13 @@ export default {
           var _data = res.data;
           if(_data.status == '1') {
             that.user = _data.data;
-            that.getUserInfo();
           }
         }
       })
-    }else {
-      return this.user;
     }
   },
-  returnUser() {
-    
+  setUser(user) {
+    this.user = user;
   },
   getUserImg() {
     return this.getUserInfo().headImg;

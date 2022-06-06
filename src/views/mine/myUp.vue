@@ -17,8 +17,6 @@
   export default {
     data() {
       return {
-        textarea:'',
-        scope:'公开',
         page:{
           pageNum:1,
           pageSize:10
@@ -35,10 +33,10 @@
     created() {
       this.load();
     },
-    methods: {
+    methods:{
       load() {
         var that = this;
-        baseApi.getWorkList(this.page).then(res => {
+        baseApi.getLikeWorks(this.page).then(res => {
           if(res.success) {
             var _data = res.data;
             if(_data.status == '1') {
@@ -70,7 +68,7 @@
         this.canLoad = false;
         setTimeout(() => {
           this.canLoad = true;
-        },1000);
+        },3500);
         this.lazy = true;
         this.page.pageNum ++;
         this.load();

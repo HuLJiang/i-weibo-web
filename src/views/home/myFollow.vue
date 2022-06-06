@@ -2,7 +2,7 @@
   <div class="all-main">
     <div class="index-left">
       <div class="left-info">
-        <div class="index-title">首页</div>
+        <div class="index-title">{{menu.title}}</div>
         <div>
           <el-menu
             :default-active="menu.active"
@@ -28,6 +28,7 @@
             placeholder="有什么新鲜事想分享给大家？"
             v-model="textarea"
             maxlength="200"
+            :autosize="true"
           >
           </el-input>
         </div>
@@ -112,11 +113,11 @@
 
 <script>
   import baseApi from '@/api/user/baseApi'
-  import BASE_URL from '@/config/index'
+  import BASE from '@/config/index'
   import loading from '@/components/loading'
   import workList from '@/components/workList'
   const menu = {
-    title:'消息',
+    title:'首页',
     active:'0',
     list: [
       {
@@ -160,7 +161,7 @@
         attaches:[],
         rows:[],
         imageUrl:'',
-        uploadUrl:BASE_URL + '/user/uploadImg',
+        uploadUrl:BASE.UPLOAD,
         token:'',
         fileName:'',
         imgs:[],
@@ -201,6 +202,8 @@
               _data.rows.forEach(item => {
                 item.toTalk = false;
                 item.focus = false;
+                item.talkMsg = '';
+                item.list = [];
               })
               if(that.rows.length == 0) {
                 that.rows = _data.rows;

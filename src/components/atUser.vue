@@ -1,5 +1,5 @@
 <template>
-  <div class="at-user">
+  <div class="at-user" @click="toUserInfo">
     <span v-if="isAt">@</span>
     <span>{{nickname}}</span>
   </div>
@@ -26,12 +26,8 @@
         if(this.username == null || this.username == '') {
           return;
         }
-        this.$router.push({
-          path:"",
-          query: {
-            u:this.username
-          }
-        })
+        var url = '#/wb/index/u/info?p=5&type=1&u=' + this.username;
+        window.open(url)
       }
     }
   }
@@ -43,5 +39,6 @@
     display: inline-block;
     cursor: pointer;
     margin-right: 10px;
+    font-size: 12px;
   }
 </style>

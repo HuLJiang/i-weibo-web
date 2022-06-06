@@ -1,22 +1,19 @@
 <template>
   <div class="mid-info-2">
-    <div v-if="rows.length == 0" style="line-height: 500px;text-align: center;background-color: white;">暂无微博</div>
     <div
-      v-for="(item,index) in rows"
-      :key="index"
       style="background-color: white;margin-bottom: 10px;"
     >
       <div
         class="share-card">
         <div>
           <el-avatar :size="60" :src="item.headImg">
-            <img src="../assets/default.gif"/>
+            <img src="../../assets/default.gif"/>
           </el-avatar>
         </div>
         <div class="share-info">
           <div style="display: flex;justify-content: space-between;">
             <div>
-              <div class="work-user-nickname" @click="toUser(item.username)">{{item.userNickname}}</div>
+              <div class="work-user-nickname" @click="toUser">{{item.userNickname}}</div>
               <div class="work-share-datatime">{{item.createTime}}</div>
               <span style="color: #939393;font-size: 12px;" v-if="item.shareScope == '2' && item.isMe == '1'">
                 <i class="el-icon-lock"></i>
@@ -29,7 +26,7 @@
             </div>
             <div style="display: flex;">
               <div 
-                v-if="showFollow && item.isMe == '0' && item.isFollow == '0'" 
+                v-if="item.isMe == '0' && item.isFollow == '0'" 
                 @click="follow(item)"
                 class="follow-user-btn">+关注</div>
               <div>
@@ -39,10 +36,10 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item 
-                      :command="{key:1,data:item,index:index}"
+                      :command="{key:1,data:item}"
                       v-if="item.isMe == '0'">屏蔽此条微博</el-dropdown-item>
                     <el-dropdown-item 
-                      :command="{key:2,data:item,index:index}"
+                      :command="{key:2,data:item}"
                       v-if="item.isMe == '0'">屏蔽该博主</el-dropdown-item>
                     <el-dropdown-item 
                       :command="{key:3,data:item}"
@@ -61,7 +58,7 @@
                       @click="copyWoriUrl(item.id)"
                       >复制该微博地址</el-dropdown-item>
                     <el-dropdown-item 
-                      :command="{key:8,data:item,index:index}"
+                      :command="{key:8,data:item}"
                       v-if="item.isMe == '1'">删除</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -69,7 +66,7 @@
             </div>
           </div>
           <div class="work-content">
-            {{item.content != null ? item.content.slice(0,200):''}}
+            {{item.content}}
           </div>
           <div v-if="item.hasAttaches == '1'" style="margin-top: 10px;">
             <div
@@ -98,7 +95,7 @@
               <span>{{item.reshareNum}}</span>
             </div>
             <div
-              v-if="item.myTalk == '0'"
+              v-if="item.myUp == null || item.myTalk == '0'"
               @click="talk(item)"
               class="user-in-prev">
               <i class="el-icon-chat-dot-square"></i>
@@ -112,7 +109,7 @@
               <span>{{item.talkNum}}</span>
             </div>
             <div
-              v-if="item.myUp == '0'"
+              v-if="item.myUp == null || item.myUp == '0'"
               @click="up(item)"
               class="user-in-prev">
               <i class="el-icon-star-off"></i>
@@ -128,16 +125,14 @@
           </div>
         </div>
       </div>
-      <div v-if="item.toTalk">
+      <div>
         <div class="user-talk">
           <el-avatar :size="35" :src="user == null ? '' : user.headImg" style="margin-left: 15px;position: relative;top: 3px;">
-            <img src="../assets/default.gif"/>
+            <img src="../../assets/default.gif"/>
           </el-avatar>
           <el-input
-            :class="{'talk-input':!item.focus,'focus':item.focus}"
-            @focus="focusInput(item)"
-            @blur="blurInput(item)"
-            v-model="item.talkMsg"
+            class="talk-input"
+            v-model="message"
             :autofocus="true"
             placeholder="发布你的评论"
             maxlength="200"
@@ -147,17 +142,17 @@
         <div style="padding: 10px 35px 10px 35px;">
           <div style="display: flex;justify-content: space-between;">
             <div></div>
-            <div class="talk-btn" @click="toTalk(item)">评论</div>
+            <div class="talk-btn" @click="toTalk()">评论</div>
           </div>
           <div class="user-talks">
             <div 
-              v-for="(k,key) in item.talks"
+              v-for="(k,key) in talks"
               :key="key"
               class="talk-template">
               <div
                 class="first-level">
                 <el-avatar :size="35" :src="user == null ? '' : user.headImg" style="margin-left: 15px;position: relative;top: 3px;">
-                  <img src="../assets/default.gif"/>
+                  <img src="../../assets/default.gif"/>
                 </el-avatar>
               </div>
               <div class="first-level-u">
@@ -169,7 +164,7 @@
                   </div>
                   <div class="talk-time">
                     <div>{{k.createTime}}</div>
-                    <div class="reply-talk" @click="showReplyBox(k,index,key)">
+                    <div class="reply-talk" @click="showReplyBox(k,key)">
                       <i class="el-icon-chat-dot-square"></i>
                     </div>
                   </div>
@@ -185,14 +180,14 @@
                       <at-user 
                         v-if="t.level == '2'" 
                         :isAt="true" 
-                        :nickname="t.toUserNickname"
-                        :username="t.toUsername"></at-user>
+                        :nickname="t.toUserNickname" 
+                        :username="t.username"></at-user>
                       <span v-if="t.level == '2'">：</span>
                       <span class="talk-msg">{{t.message}}</span>
                     </div>
                     <div class="talk-time">
                       <div>{{t.createTime}}</div>
-                      <div class="reply-talk" @click="showReplyBox(t,index,key)">
+                      <div class="reply-talk" @click="showReplyBox(t,key)">
                         <i class="el-icon-chat-dot-square"></i>
                       </div>
                     </div>
@@ -212,9 +207,6 @@
             </div>
           </div>
         </div>
-        <div v-if="item.talkNum > 3" class="to-work-detail" @click="toDetail(item.id)">查看全部{{item.talkNum}}条评论
-          <i class="el-icon-arrow-right"></i>
-        </div>
       </div>
     </div>
     <!-- 用户评论弹出框 -->
@@ -228,7 +220,7 @@
           <div
             class="first-level">
             <el-avatar :size="35" :src="showUser.headImg" style="margin-left: 15px;position: relative;top: 3px;">
-              <img src="../assets/default.gif"/>
+              <img src="../../assets/default.gif"/>
             </el-avatar>
           </div>
           <div class="first-level-u">
@@ -255,8 +247,9 @@
                   <span v-if="item.level == '2'">回复</span>
                   <at-user 
                     v-if="item.level == '2'" 
-                    :isAt="true" :nickname="item.toUserNickname" 
-                    :username="item.toUsername"></at-user>
+                    :isAt="true" 
+                    :nickname="item.toUserNickname"
+                    :username="item.username"></at-user>
                   <span v-if="item.level == '2'">：</span>
                   <span class="talk-msg">{{item.message}}</span>
                 </div>
@@ -302,20 +295,10 @@
   import loadMore from '@/components/loadMore'
   import BASE from '@/config/index'
   export default {
-    props: {
-      rows: {
-        type:Array,
-        default: () => {
-          return [];
-        }
-      },
-      showFollow: {
-        type:Boolean,
-        default:false
-      }
-    },
     data() {
       return {
+        workId:'',
+        item:{},
         user:{},
         canUp:true,
         focus:false,
@@ -338,7 +321,13 @@
           more:true,
           isLoad:false
         },
-        canLoad:true
+        canLoad:true,
+        talkPage: {
+          pageNum:1,
+          pageSize:15
+        },
+        talks:[],
+        message:''
       }
     },
     components:{
@@ -346,32 +335,51 @@
       loadMore
     },
     created() {
+      this.workId = this.$route.query.id;
       this.load();
     },
     methods:{
       load() {
-        this.user = this.userInfo.getUserInfo();
+        var that = this;
+        baseApi.getDetailWork({workId:this.workId}).then(res => {
+          if(res.success) {
+            var _data = res.data;
+            if(_data.status == '1') {
+              that.item = _data.data;
+              that.item.focus=true;
+              that.talk();
+            }else {
+              that.$message.warning(_data.msg);
+            }
+          }
+        })
       },
       reshare() {
         this.$message.warning("功能建设中...")
       },
-      talk(item) {
-        if(item.toTalk) {
-          item.toTalk = false;
-          return;
-        }
+      talk() {
         var param = {
-          pageNum:1,
-          pageSize:3,
+          pageNum:this.talkPage.pageNum,
+          pageSize:this.talkPage.pageSize,
           level:0,
-          workId:item.id
+          workId:this.item.id
         }
+        var that = this;
         baseApi.getUserTalk(param).then(res => {
           if(res.success) {
             var _data = res.data;
             if(_data.status == '1') {
-              item.talks = _data.rows;
-              item.toTalk = true;
+              _data.rows.forEach(i => {
+                i.list = [];
+              })
+              if(that.talks == null || that.talks.length == 0) {
+                that.talks = _data.rows;
+              }else {
+                _data.rows.forEach(i => {
+                  that.talks.push(i);
+                })
+              }
+              
             }else {
               this.$message.warning(_data.msg);
             }
@@ -420,26 +428,27 @@
         }
         return nickname == user.nickname;
       },
-      focusInput(item) {
-        item.focus = true;
+      focusInput() {
+        this.item.focus = true;
+        
       },
-      blurInput(item) {
-        item.focus = false;
+      blurInput() {
+        this.item.focus = false;
       },
-      toTalk(item) {
-        if(item.talkMsg == '') {
+      toTalk() {
+        if(this.message == '') {
           this.$message.warning('请输入回复内容');
           return;
         }
         var param = {
           type:'1',
-          workId:item.id,
-          toUserId:item.userId,
-          toUserNickname:item.userNickname,
-          toUsername:item.username,
-          message:item.talkMsg,
+          workId:this.item.id,
+          toUserId:this.item.userId,
+          toUserNickname:this.item.userNickname,
+          toUsername:this.item.username,
+          message:this.message,
           level:0,
-          father:item.id
+          father:this.item.id
         }
         var that = this;
         baseApi.interaction(param).then(res => {
@@ -447,10 +456,10 @@
             var _data = res.data;
             if(_data.status == '1') {
               that.$message.success("评论成功");
-              item.talkMsg = '';
-              item.talkNum = item.talkNum + 1;
-              item.myTalk = '1';
-              item.talks.splice(0,0,_data.data);
+              that.message = '';
+              that.item.talkNum = that.item.talkNum + 1;
+              that.item.myTalk = '1';
+              that.talks.splice(0,0,_data.data);
             }else {
               that.$message.warning(_data.msg)
             }
@@ -503,14 +512,11 @@
         })
       },
       closeReply() {
-        console.log(1)
         this.replyMessage = '';
       },
-      showReplyBox(item,index,key) {
-        console.log(item);
+      showReplyBox(item,key) {
         this.replyUser = item;
         this.replyIsShow = true;
-        this.now.first = index;
         this.now.second = key;
       },
       reply() {
@@ -547,11 +553,7 @@
               if(that.talkIsShow) {
                 that.showTalks.splice(0,0,_data.data);
               }else {
-                var info = that.rows[that.now.first].talks[that.now.second];
-                if(info.list == null) {
-                  info.list = [];
-                }
-                info.list.splice(0,0,_data.data);
+                that.talks[that.now.second].list.splice(0,0,_data.data);
               }
               that.replyMessage = '';
               that.replyIsShow = false;
@@ -573,8 +575,9 @@
         this.talkInfo.isLoad = true;
         this.showDetailTalk()
       },
-      toDetail(id) {
-        window.open("/#/wb/index/workDetail?id=" + id);
+      lazyLoad() {
+        this.talkPage.pageNum ++;
+        this.talk();
       },
       resetShareScope(param,data) {
         baseApi.resetShareScope(param).then(res => {
@@ -591,9 +594,9 @@
         var key = info.key;
         var data = info.data;
         if(key == 1) {
-          this.black(data.id,info.index,'1');
+          this.black(data.id,'1');
         }else if(key == 2){
-          this.black(data.userId,info.index,'0')
+          this.black(data.userId,'0');
         }else if(key == 3) {
           this.report(data);
         }else if(key == 4) {
@@ -616,17 +619,22 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              this.deleteWork({workId:data.id},info.index);
+              this.deleteWork({workId:data.id});
             })
         }
       },
-      deleteWork(param,index) {
+      deleteWork(param) {
         baseApi.deleteWork(param).then(res => {
           if(res.success) {
             var _data = res.data;
             if(_data.status == '1') {
-              this.rows.splice(index,1);
               this.$message.success("删除成功");
+              this.$router.push({
+                path:"/wb/index/follow",
+                query:{
+                  p:1
+                }
+              })
             }
           }
         })
@@ -648,12 +656,18 @@
           }
         })
       },
-      toUser(username) {
-        if(username == null || username == '') {
+      toUser() {
+        if(this.item.username == null || this.item.username == '') {
           return;
         }
-        var url = '#/wb/index/u/info?p=5&type=1&u=' + username;
-        window.open(url)
+        this.$router.push({
+          path:'/wb/index/u/info',
+          query:{
+            p:5,
+            type:1,
+            u:this.item.username
+          }
+        })
       },
       report(data) {
         var that = this;
@@ -673,17 +687,13 @@
           })
         })
       },
-      black(id,index,type) {
+      black(id,type) {
         baseApi.black({id:id,type:type}).then(res => {
           if(res.success) {
             var _data = res.data;
             if(_data.status == '1') {
               this.$message.success("操作成功");
-              if(type == '1') {
-                this.rows.splice(index,1);
-              }else {
-                this.deleteAll(id);
-              }
+              
               
             }else {
               this.$message.warning(_data.msg)
@@ -691,23 +701,12 @@
           }
         })
       },
-      deleteAll(id) {
-        var index = 0;
-        var rows = this.rows;
-        while(index < rows.length) {
-          if(rows[index].userId == id) {
-            rows.splice(index,1);
-          }else {
-            index ++;
-          }
-        }
-      }
     }
   }
 </script>
 
 <style>
-  @import url('../utils/common.css');
+  @import url('../../utils/common.css');
   .talk-input {
   }
 
