@@ -39,7 +39,7 @@
               <el-button 
                 @click="handleClick(scope.row,scope.$index)" 
                 size="small">查看</el-button>
-              <el-button type="parimary" size="small">编辑</el-button>
+              <!-- <el-button type="parimary" size="small">编辑</el-button> -->
               <el-popconfirm
                 icon="el-icon-info"
                 icon-color="red"
@@ -50,7 +50,7 @@
                   style="margin-left: 10px;"
                   type="danger" 
                   size="small"
-                  slot="reference">封禁</el-button>
+                  slot="reference">删除</el-button>
               </el-popconfirm>
             </template>
           </el-table-column>
@@ -118,12 +118,12 @@
        this.page.pageNum = e;
        this.load();
       },
-      handleClick(e,index) {
-        console.log(e)
-        console.log(index)
+      handleClick(e) {
+        var url = "#/wb/index/workDetail?id=" + e.id;
+        window.open(url);
       },
       deleteUser(e,index) {
-        adminApi.delete({userId:e.id}).then(res => {
+        adminApi.delete({id:e.id,type:'1'}).then(res => {
           if(res.success) {
             var _data = res.data;
             if(_data.status == '1') {

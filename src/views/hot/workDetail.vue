@@ -349,7 +349,13 @@
               that.item.focus=true;
               that.talk();
             }else {
-              that.$message.warning(_data.msg);
+              this.$message.warning("作品不见了哦");
+              this.$router.push({
+                path:"/wb/index/hot/list",
+                query:{
+                  p:3
+                }
+              })
             }
           }
         })

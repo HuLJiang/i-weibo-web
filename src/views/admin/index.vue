@@ -3,11 +3,11 @@
     <el-container>
       <el-header>
         <div style="display: flex;justify-content: space-between;">
-          <div>weibo后台管理系统</div>
+          <div>后台管理系统</div>
           <div style="margin-right: 150px;">
             
             <el-dropdown trigger="click" @command="handleCommand">
-              <el-avatar :size="40" :src="''" class="head-img">
+              <el-avatar :size="40" :src="user.headImg" class="head-img">
                 <img src="../../assets/default.gif"/>
               </el-avatar>
               <el-dropdown-menu slot="dropdown">
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+  import baseApi from '@/api/user/baseApi'
   export default {
     data() {
       return {
@@ -56,17 +57,40 @@
             type:'2'
           }
         ],
-        active:'1'
+        active:'1',
+        user:{}
       }
     },
+    created() {
+      this.load();
+    },
     methods:{
+      load() {
+        this.user = this.userInfo.getUserInfo();
+      },
       select(e) {
         this.$router.push({
           path:this.menu[parseInt(e) - 1].url
         })
       },
-      handleCommand() {
-        
+      handleCommand(e) {
+        if(e == 1) {
+          baseApi.logout().then(res => {
+            if(res.success) {
+              var _data = res.data;
+              if(_data.status == '1') {
+                localStorage.removeItem('token');
+                this.$router.push({
+                  path:'/wb/index/hot/list',
+                  query:{
+                    p:3,
+                    type:1
+                  }
+                })
+              }
+            }
+          })
+        }
       }
     }
   }

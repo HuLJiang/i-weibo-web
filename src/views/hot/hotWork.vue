@@ -46,12 +46,12 @@
         name:'热门微博',
         icon:'el-icon-s-opportunity'
       },
-      {
-        type:'2',
-        url:'',
-        name:'热搜榜',
-        icon:'el-icon-search'
-      }
+      // {
+      //   type:'2',
+      //   url:'',
+      //   name:'热搜榜',
+      //   icon:'el-icon-search'
+      // }
     ]
   }
   export default {

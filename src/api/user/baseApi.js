@@ -81,5 +81,8 @@ export default {
   },
   black(param) {
     return get('/user/black',param);
-  }
+  },
+  resetPsd(param) {
+    return post('/user/resetPsd',param);
+  },
 }

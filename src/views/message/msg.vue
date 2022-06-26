@@ -36,22 +36,22 @@
     title:'消息',
     active:'1',
     list: [
+      // {
+      //   type:'1',
+      //   url:'/wb/index/msg/at',
+      //   name:'@我的',
+      //   icon:'el-icon-paperclip',
+      //   num:0
+      // },
       {
         type:'1',
-        url:'/wb/index/msg/at',
-        name:'@我的',
-        icon:'el-icon-paperclip',
-        num:0
-      },
-      {
-        type:'2',
         url:'/wb/index/msg/talk',
         name:'评论',
         icon:'el-icon-chat-dot-round',
         num:0
       },
       {
-        type:'3',
+        type:'2',
         url:'/wb/index/msg/like',
         name:'赞',
         icon:'el-icon-star-on',
@@ -89,9 +89,9 @@
             if(_data.status == '1') {
               _data.rows.forEach(item => {
                 if(item.type == 0) {
-                  this.menu.list[2].num = item.num
+                  this.menu.list[1].num = item.num
                 }else {
-                  this.menu.list[1].num = item.num;
+                  this.menu.list[0].num = item.num;
                 }
               })
             }
@@ -99,7 +99,7 @@
         })
       },
       select(e) {
-        if(e == '2') {
+        if(e == '1') {
           this.read('1',e);
         }else {
           this.read('0',e)

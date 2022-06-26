@@ -164,13 +164,13 @@
        this.page.pageNum = e;
        this.load();
       },
-      handleClick(e,index) {
-        console.log(e)
-        console.log(index)
+      handleClick(e) {
+        var url = "#/wb/index/u/info?p=5&type=1&u=" + e.username;
+        window.open(url);
       },
       deleteUser(e,index) {
-        console.log(1)
-        adminApi.delete({userId:e.id}).then(res => {
+        // console.log(1)
+        adminApi.delete({id:e.id,type:'0'}).then(res => {
           if(res.success) {
             var _data = res.data;
             if(_data.status == '1') {
@@ -189,6 +189,8 @@
             if(_data.status == '1') {
               var user = _data.data;
               this.copy(user);
+              user.role = 1;
+              user.show = this.userInfo.getUserInfo().role >= 64;
               this.tableData.splice(0,0,user);
             }
           }

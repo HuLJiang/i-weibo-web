@@ -70,9 +70,9 @@
                 <i class="el-icon-picture-outline"></i>
               </div>
             </el-upload>
-            <div class="share-icon" @click="atUser">
+            <!-- <div class="share-icon" @click="atUser">
               <i class="el-icon-paperclip"></i>
-            </div>
+            </div> -->
           </div>
           <div>
             <div class="share-scope">
@@ -262,6 +262,11 @@
               var _data = res.data;
               if(_data.status == '1') {
                 // that.$message.success("分享成功");
+                
+                _data.data.toTalk = false;
+                _data.data.focus = false;
+                _data.data.talkMsg = '';
+                _data.data.list = [];
                 that.rows.splice(0,0,_data.data);
                 that.textarea = '';
                 that.imgs = [];

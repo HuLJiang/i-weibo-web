@@ -22,7 +22,7 @@ import Mobile from "@/views/mobile/index"
 
 import At from "@/views/message/msg"
 import LikeMe from "@/views/message/likeMeWork"
-import AtMe from "@/views/message/atMe"
+// import AtMe from "@/views/message/atMe"
 import Talk from "@/views/message/talk"
 
 
@@ -79,11 +79,11 @@ export const constantRouterMap = [
             name:'At',
             component:At,
             children:[
-              {
-                path:"/wb/index/msg/at",
-                name:'at',
-                component:AtMe,
-              },
+              // {
+              //   path:"/wb/index/msg/at",
+              //   name:'at',
+              //   component:AtMe,
+              // },
               {
                 path:"/wb/index/msg/like",
                 name:'likeMe',
